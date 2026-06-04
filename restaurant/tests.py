@@ -29,7 +29,8 @@ class RestaurantModelTest(TestCase):
         self.stay = Stay.objects.create(
             guest=self.guest,
             room=self.room,
-            check_in=timezone.now()
+            check_in=timezone.now(),
+            total_room_charge=Decimal("0.00")
         )
 
     def test_menu_item_creation(self):
@@ -57,7 +58,28 @@ class RestaurantModelTest(TestCase):
             table=self.table,
             total_amount=Decimal("15.00"),
             status="PAID",
-            stay=self.stay
+            charge_to_room=self.stay
         )
-        self.assertEqual(order.stay, self.stay)
+        self.assertEqual(order.charge_to_room, self.stay)
         self.assertEqual(self.stay.restaurant_orders.first(), order)
+
+    def test_apply_charge_to_room(self):
+        order = Order.objects.create(
+            table=self.table,
+            total_amount=Decimal("25.50"),
+            status="PAID",
+            charge_to_room=self.stay
+        )
+        success = order.apply_charge_to_room()
+        self.assertTrue(success)
+        self.stay.refresh_from_db()
+        self.assertEqual(self.stay.total_room_charge, Decimal("25.50"))
+
+    def test_apply_charge_to_room_no_stay(self):
+        order = Order.objects.create(
+            table=self.table,
+            total_amount=Decimal("10.00"),
+            status="PAID"
+        )
+        success = order.apply_charge_to_room()
+        self.assertFalse(success)

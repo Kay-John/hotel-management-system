@@ -36,7 +36,7 @@ class Order(models.Model):
     items = models.ManyToManyField(MenuItem, related_name='orders')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')
-    stay = models.ForeignKey(
+    charge_to_room = models.ForeignKey(
         'hotel.Stay',
         on_delete=models.SET_NULL,
         null=True,
@@ -44,6 +44,14 @@ class Order(models.Model):
         related_name='restaurant_orders',
         help_text="Link to guest stay for room folio charging"
     )
+
+    def apply_charge_to_room(self):
+        """Appends the restaurant order total to the guest's final hotel bill."""
+        if self.charge_to_room:
+            self.charge_to_room.total_room_charge += self.total_amount
+            self.charge_to_room.save()
+            return True
+        return False
 
     def __str__(self):
         return f"Order {self.id} - Table {self.table.table_number}"

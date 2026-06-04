@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from .models import MenuItem, Table, Order
 from hotel.models import Room, Guest, Stay
 from decimal import Decimal
@@ -83,3 +84,16 @@ class RestaurantModelTest(TestCase):
         )
         success = order.apply_charge_to_room()
         self.assertFalse(success)
+
+    def test_menu_view(self):
+        response = self.client.get(reverse('restaurant:menu'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Burger")
+        self.assertContains(response, "Main Course")
+
+    def test_qr_code_generation(self):
+        from .utils import generate_qr_code
+        from django.core.files import File
+        qr_file = generate_qr_code("http://testserver/restaurant/menu/")
+        self.assertIsInstance(qr_file, File)
+        self.assertTrue(qr_file.name.endswith('.png'))

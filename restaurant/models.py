@@ -19,6 +19,7 @@ class MenuItem(models.Model):
 class Table(models.Model):
     table_number = models.CharField(max_length=10, unique=True)
     capacity = models.PositiveIntegerField()
+    qr_code = models.ImageField(upload_to='table_qr_codes/', null=True, blank=True)
 
     def __str__(self):
         return f"Table {self.table_number}"

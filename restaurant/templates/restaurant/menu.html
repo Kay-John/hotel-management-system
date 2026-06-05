@@ -36,9 +36,21 @@
         .menu-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
             padding-bottom: 5px;
             border-bottom: 1px dashed #eee;
+        }
+        .item-info {
+            display: flex;
+            align-items: center;
+        }
+        .item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 15px;
         }
         .item-name {
             font-weight: bold;
@@ -55,7 +67,12 @@
         <div class="category-title">{{ category }}</div>
         {% for item in items %}
         <div class="menu-item">
-            <span class="item-name">{{ item.name }}</span>
+            <div class="item-info">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-image">
+                {% endif %}
+                <span class="item-name">{{ item.name }}</span>
+            </div>
             <span class="item-price">${{ item.price }}</span>
         </div>
         {% endfor %}

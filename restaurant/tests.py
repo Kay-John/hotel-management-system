@@ -97,3 +97,17 @@ class RestaurantModelTest(TestCase):
         qr_file = generate_qr_code("http://testserver/restaurant/menu/")
         self.assertIsInstance(qr_file, File)
         self.assertTrue(qr_file.name.endswith('.png'))
+
+    def test_menu_item_image_field(self):
+        from django.core.files.uploadedfile import SimpleUploadedFile
+        image_content = b'\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x00\x00\x00\x21\xf9\x04\x01\x0a\x00\x01\x00\x2c\x00\x00\x00\x00\x01\x00\x01\x00\x00\x02\x02\x4c\x01\x00\x3b'
+        mock_image = SimpleUploadedFile("test_food.gif", image_content, content_type="image/gif")
+
+        item_with_image = MenuItem.objects.create(
+            name="Salad",
+            category="APPETIZER",
+            price=Decimal("12.00"),
+            image=mock_image
+        )
+        self.assertTrue(item_with_image.image.name.startswith('menu_items/test_food'))
+        self.assertEqual(item_with_image.image.url, f"/media/{item_with_image.image.name}")

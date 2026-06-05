@@ -6,7 +6,7 @@ from .utils import generate_qr_code
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price')
+    list_display = ('name', 'category', 'price', 'image')
     list_filter = ('category',)
     search_fields = ('name',)
 

@@ -1,12 +1,16 @@
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import MenuItem, Table, Order
+from .models import MenuItem, Table, Order, OrderItem
 from .utils import generate_qr_code
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 1
 
 @admin.register(MenuItem)
 class MenuItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'price', 'image')
+    list_display = ('name', 'category', 'price', 'daily_opening_stock', 'current_stock', 'image')
     list_filter = ('category',)
     search_fields = ('name',)
 
@@ -37,4 +41,4 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'table', 'total_amount', 'status', 'charge_to_room')
     list_filter = ('status', 'table')
     search_fields = ('table__table_number', 'charge_to_room__guest__name')
-    filter_horizontal = ('items',)
+    inlines = [OrderItemInline]

@@ -1,10 +1,9 @@
 Watching for file changes with StatReloader
-[04/Jun/2026 23:56:44] "GET /restaurant/menu/ HTTP/1.1" 200 2200
-[04/Jun/2026 23:56:44] "GET /media/menu_items/dessert.gif HTTP/1.1" 200 37
+[06/Jun/2026 12:08:42] "GET /restaurant/eod-report/ HTTP/1.1" 200 1332
 Performing system checks...
 
 System check identified no issues (0 silenced).
-June 04, 2026 - 23:56:19
+June 06, 2026 - 12:08:06
 Django version 6.0.6, using settings 'hotel_management_system.settings'
 Starting development server at http://0.0.0.0:8000/
 Quit the server with CONTROL-C.

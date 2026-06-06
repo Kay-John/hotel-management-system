@@ -1,11 +1,5 @@
-asgiref==3.11.1
-Django==6.0.6
-greenlet==3.3.2
-pillow==12.2.0
-playwright==1.58.0
-pyee==13.0.1
-qrcode==8.2
-sqlparse==0.5.5
-typing_extensions==4.15.0
+django
 gunicorn
 whitenoise
+pillow
+qrcode

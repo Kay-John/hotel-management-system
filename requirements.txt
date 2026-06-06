@@ -7,3 +7,5 @@ pyee==13.0.1
 qrcode==8.2
 sqlparse==0.5.5
 typing_extensions==4.15.0
+gunicorn
+whitenoise

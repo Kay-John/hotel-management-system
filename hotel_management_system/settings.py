@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "pwa",
     "hotel",
     "restaurant",
 ]
@@ -57,7 +59,7 @@ ROOT_URLCONF = "hotel_management_system.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -123,3 +125,46 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Media files
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# PWA Settings
+PWA_APP_NAME = os.environ.get('HOTEL_NAME', 'Hotel Management System')
+PWA_APP_DESCRIPTION = "Management System for Hotel and Restaurant"
+PWA_APP_THEME_COLOR = '#0A0302'
+PWA_APP_BACKGROUND_COLOR = '#ffffff'
+PWA_APP_DISPLAY = 'standalone'
+PWA_APP_SCOPE = '/'
+PWA_APP_ORIENTATION = 'any'
+PWA_APP_START_URL = '/'
+PWA_APP_STATUS_BAR_COLOR = 'default'
+PWA_APP_ICONS = [
+    {
+        "src": "/static/images/pwa-icon.jpg",
+        "sizes": "192x192",
+        "type": "image/jpeg"
+    },
+    {
+        "src": "/static/images/pwa-icon.jpg",
+        "sizes": "512x512",
+        "type": "image/jpeg"
+    }
+]
+PWA_APP_ICONS_APPLE = [
+    {
+        "src": "/static/images/pwa-icon.jpg",
+        "sizes": "192x192",
+        "type": "image/jpeg"
+    },
+    {
+        "src": "/static/images/pwa-icon.jpg",
+        "sizes": "512x512",
+        "type": "image/jpeg"
+    }
+]
+PWA_APP_SPLASH_SCREEN = [
+    {
+        'src': '/static/images/pwa-icon.jpg',
+        'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
+    }
+]
+PWA_APP_DIR = 'ltr'
+PWA_APP_LANG = 'en-US'

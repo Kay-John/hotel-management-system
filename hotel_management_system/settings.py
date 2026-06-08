@@ -142,31 +142,38 @@ PWA_APP_START_URL = '/'
 PWA_APP_STATUS_BAR_COLOR = 'default'
 PWA_APP_ICONS = [
     {
-        "src": "/static/images/pwa-icon.jpg",
-        "sizes": "192x192",
-        "type": "image/jpeg"
+        'src': '/static/images/pwa-icon.png',
+        'sizes': '512x512',
+        'type': 'image/png',
+        'purpose': 'any'
+    }
+]
+PWA_APP_SCREENSHOTS = [
+    {
+        'src': '/static/images/screenshot-desktop.png',
+        'sizes': '1280x720',
+        'type': 'image/png',
+        'form_factor': 'wide',
+        'label': 'Desktop Dashboard Management'
     },
     {
-        "src": "/static/images/pwa-icon.jpg",
-        "sizes": "512x512",
-        "type": "image/jpeg"
+        'src': '/static/images/screenshot-mobile.png',
+        'sizes': '720x1280',
+        'type': 'image/png',
+        'form_factor': 'narrow',
+        'label': 'Mobile Dashboard Management'
     }
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        "src": "/static/images/pwa-icon.jpg",
-        "sizes": "192x192",
-        "type": "image/jpeg"
-    },
-    {
-        "src": "/static/images/pwa-icon.jpg",
+        "src": "/static/images/pwa-icon.png",
         "sizes": "512x512",
-        "type": "image/jpeg"
+        "type": "image/png"
     }
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': '/static/images/pwa-icon.jpg',
+        'src': '/static/images/pwa-icon.png',
         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
     }
 ]

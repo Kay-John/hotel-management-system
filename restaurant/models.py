@@ -3,9 +3,12 @@ from django.db import models
 class MenuItem(models.Model):
     CATEGORY_CHOICES = [
         ('APPETIZER', 'Appetizer'),
-        ('MAIN_COURSE', 'Main Course'),
+        ('LOCAL_DISHES', 'Local Dishes'),
+        ('SNACKS', 'Snacks'),
         ('DESSERT', 'Dessert'),
-        ('BEVERAGE', 'Beverage'),
+        ('THE_BAR', 'The Bar'),
+        ('COFFEE_AND_TEAS', 'Coffee and Teas'),
+        ('SOFT_DRINKS', 'Soft drinks'),
     ]
 
     name = models.CharField(max_length=100)

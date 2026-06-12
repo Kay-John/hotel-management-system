@@ -10,7 +10,7 @@ class RestaurantModelTest(TestCase):
     def setUp(self):
         self.menu_item = MenuItem.objects.create(
             name="Burger",
-            category="MAIN_COURSE",
+            category="LOCAL_DISHES",
             price=Decimal("15.00"),
             daily_opening_stock=10,
             current_stock=10
@@ -80,6 +80,7 @@ class RestaurantModelTest(TestCase):
         response = self.client.get(reverse('restaurant:menu'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Burger")
+        self.assertContains(response, "Local Dishes")
 
     def test_morning_reset_view(self):
         response = self.client.post(reverse('restaurant:morning_reset'), {

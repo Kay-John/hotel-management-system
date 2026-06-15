@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: hotel-management-system
+    env: python
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --no-input && python manage.py migrate"
+    startCommand: "gunicorn hotel_management_system.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.13
+      - key: HOTEL_NAME
+        value: "Hotel Management System"

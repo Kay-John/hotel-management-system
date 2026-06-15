@@ -61,7 +61,8 @@
     </style>
 </head>
 <body>
-    <h1>Our Menu</h1>
+    {% load humanize %}
+    <h1>{{ hotel_name }} Menu</h1>
     {% for category, items in grouped_menu.items %}
     <div class="category-section">
         <div class="category-title">{{ category }}</div>
@@ -73,7 +74,7 @@
                 {% endif %}
                 <span class="item-name">{{ item.name }}</span>
             </div>
-            <span class="item-price">${{ item.price }}</span>
+            <span class="item-price">UGX {{ item.price|floatformat:0|intcomma }}</span>
         </div>
         {% endfor %}
     </div>

@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
@@ -13,7 +14,11 @@ class MenuView(View):
                 grouped_menu[category] = []
             grouped_menu[category].append(item)
 
-        return render(request, 'restaurant/menu.html', {'grouped_menu': grouped_menu})
+        hotel_name = os.environ.get('HOTEL_NAME', 'Our')
+        return render(request, 'restaurant/menu.html', {
+            'grouped_menu': grouped_menu,
+            'hotel_name': hotel_name
+        })
 
 
 class MorningResetView(View):

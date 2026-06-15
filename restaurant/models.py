@@ -27,6 +27,12 @@ class Table(models.Model):
     capacity = models.PositiveIntegerField()
     qr_code = models.ImageField(upload_to='table_qr_codes/', null=True, blank=True)
 
+    def save(self, *args, **kwargs):
+        from .utils import generate_qr_code
+        url = f"https://jk-hotel-management-system.onrender.com/menu/?table={self.table_number}"
+        self.qr_code = generate_qr_code(url)
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"Table {self.table_number}"
 

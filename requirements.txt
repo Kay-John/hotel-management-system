@@ -4,3 +4,5 @@ gunicorn
 pillow
 qrcode[pil]
 whitenoise
+dj-database-url
+psycopg2-binary

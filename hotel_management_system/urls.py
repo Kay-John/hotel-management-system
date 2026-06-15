@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from restaurant.views import MenuView
 
 hotel_name = os.environ.get('HOTEL_NAME', 'Hotel Management System')
 admin.site.site_header = hotel_name
@@ -29,5 +30,6 @@ admin.site.index_title = hotel_name
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("restaurant/", include("restaurant.urls")),
+    path("menu/", MenuView.as_view(), name="customer_menu"),
     path('', include('pwa.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

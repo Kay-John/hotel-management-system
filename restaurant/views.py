@@ -2,7 +2,46 @@ import os
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView
-from .models import MenuItem
+from django.db.models import Count, Sum
+from .models import MenuItem, Order, Table
+
+class DashboardView(View):
+    def get(self, request):
+        # New Orders (Pending)
+        new_orders = Order.objects.filter(status='PENDING').order_by('-id')
+        new_orders_count = new_orders.count()
+
+        # Total Orders
+        total_orders_count = Order.objects.count()
+
+        # Active Orders (Pending + Served + Paid) for the processing grid
+        # Including PAID so we can show "Completed" status in the list for a while
+        active_orders = Order.objects.exclude(status='CANCELLED').order_by('-id')[:20]
+
+        # Payments Pending (Served orders waiting for payment)
+        pending_payments = Order.objects.filter(status='SERVED').order_by('-id')
+
+        # Inventory Notifications (Out of stock or low stock < 5)
+        out_of_stock_items = MenuItem.objects.filter(current_stock=0)
+        low_stock_items = MenuItem.objects.filter(current_stock__gt=0, current_stock__lt=5)
+
+        # Placeholder for Waiting List (In a real system, this might be a separate model)
+        waiting_list_count = 0 # Mocking as 0 for now
+
+        # Placeholder for Popular Dishes
+        popular_dishes = MenuItem.objects.annotate(order_count=Count('orders')).order_by('-order_count')[:5]
+
+        context = {
+            'new_orders_count': new_orders_count,
+            'total_orders_count': total_orders_count,
+            'waiting_list_count': waiting_list_count,
+            'active_orders': active_orders,
+            'pending_payments': pending_payments,
+            'out_of_stock_items': out_of_stock_items,
+            'low_stock_items': low_stock_items,
+            'popular_dishes': popular_dishes,
+        }
+        return render(request, 'dashboard.html', context)
 
 class MenuView(View):
     def get(self, request):

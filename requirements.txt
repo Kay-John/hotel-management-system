@@ -6,3 +6,5 @@ django-pwa
 whitenoise
 qrcode
 pillow
+psycopg2-binary>=2.9.9
+gunicorn>=23.0.0

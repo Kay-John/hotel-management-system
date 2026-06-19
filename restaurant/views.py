@@ -31,6 +31,13 @@ class DashboardView(View):
         # Placeholder for Popular Dishes
         popular_dishes = MenuItem.objects.annotate(order_count=Count('orders')).order_by('-order_count')[:5]
 
+        # Mock trend data for UI
+        trends = {
+            'new_orders': '+2.5%',
+            'total_orders': '+1.2%',
+            'waiting_list': '-0.5%'
+        }
+
         context = {
             'new_orders_count': new_orders_count,
             'total_orders_count': total_orders_count,
@@ -40,6 +47,7 @@ class DashboardView(View):
             'out_of_stock_items': out_of_stock_items,
             'low_stock_items': low_stock_items,
             'popular_dishes': popular_dishes,
+            'trends': trends,
         }
         return render(request, 'dashboard.html', context)
 

@@ -44,8 +44,14 @@ class Order(models.Model):
         ('PAID', 'Paid'),
         ('CANCELLED', 'Cancelled'),
     ]
+    ORDER_TYPE_CHOICES = [
+        ('DINE_IN', 'Dine-In'),
+        ('TAKEAWAY', 'Takeaway'),
+        ('ROOM_SERVICE', 'Room Service'),
+    ]
 
-    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='orders')
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
+    order_type = models.CharField(max_length=20, choices=ORDER_TYPE_CHOICES, default='DINE_IN')
     items = models.ManyToManyField(MenuItem, through='OrderItem', related_name='orders')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='PENDING')

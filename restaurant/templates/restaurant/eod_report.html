@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>End-of-Day Report</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        .total-row { font-weight: bold; background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>End-of-Day Report</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Opening Stock</th>
+                <th>Current Stock</th>
+                <th>Portions Sold</th>
+                <th>Price</th>
+                <th>Expected Revenue</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in report_data %}
+            <tr>
+                <td>{{ data.item.name }}</td>
+                <td>{{ data.item.daily_opening_stock }}</td>
+                <td>{{ data.item.current_stock }}</td>
+                <td>{{ data.portions_sold }}</td>
+                <td>${{ data.item.price }}</td>
+                <td>${{ data.expected_revenue }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total-row">
+                <td colspan="5" style="text-align: right;">Total Expected Revenue:</td>
+                <td>${{ total_expected_revenue }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

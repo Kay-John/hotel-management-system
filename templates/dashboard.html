@@ -1,0 +1,351 @@
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leba Hotel HMS - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(212, 175, 55, 0.4); }
+
+        body { font-family: 'Montserrat', sans-serif; background-color: #FDFBF7; }
+        .serif-font { font-family: 'Playfair+Display', serif; }
+        .sidebar-marble {
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a2a1a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .sidebar-marble::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/black-marble.png');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        .gold-vein {
+            position: absolute;
+            width: 200%; height: 1px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            transform: rotate(-45deg);
+            opacity: 0.2;
+        }
+        .wood-brass-card {
+            background: linear-gradient(to bottom, #3d2b1f, #2a1d15);
+            border: 2px solid #b8860b;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .gold-button {
+            background: linear-gradient(to bottom, #d4af37, #b8860b);
+            color: #1a1a1a;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .gold-button:hover {
+            background: linear-gradient(to bottom, #e5c05b, #d4af37);
+        }
+        .dish-card {
+            background: white;
+            border-left: 4px solid #d4af37;
+        }
+    </style>
+</head>
+<body class="leading-normal tracking-normal">
+
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Left Sidebar (Dark Marble) -->
+        <div class="sidebar-marble w-full md:w-64 flex-shrink-0 shadow-2xl z-20 flex flex-col">
+            <div class="gold-vein" style="top: 20%"></div>
+            <div class="gold-vein" style="top: 60%"></div>
+
+            <div class="p-8 text-center relative z-10">
+                <h1 class="serif-font text-2xl text-amber-500 tracking-tighter">LEBA HOTEL</h1>
+                <p class="text-[10px] text-amber-200/50 uppercase tracking-[0.3em]">Management System</p>
+            </div>
+
+            <nav class="flex-grow px-4 relative z-10">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="{% url 'restaurant:dashboard' %}" class="flex items-center p-3 text-amber-100 hover:bg-amber-900/30 rounded-lg transition-all group">
+                            <i class="fas fa-th-large w-6 text-amber-500 group-hover:scale-110 transition-transform"></i>
+                            <span class="ml-3 font-medium">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'restaurant:menu' %}" class="flex items-center p-3 text-amber-100/70 hover:bg-amber-900/30 rounded-lg transition-all">
+                            <i class="fas fa-utensils w-6 text-amber-500/50"></i>
+                            <span class="ml-3">Menu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/restaurant/order/" class="flex items-center p-3 text-amber-100/70 hover:bg-amber-900/30 rounded-lg transition-all">
+                            <i class="fas fa-receipt w-6 text-amber-500/50"></i>
+                            <span class="ml-3">Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/restaurant/table/" class="flex items-center p-3 text-amber-100/70 hover:bg-amber-900/30 rounded-lg transition-all">
+                            <i class="fas fa-chair w-6 text-amber-500/50"></i>
+                            <span class="ml-3">Tables</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'restaurant:eod_report' %}" class="flex items-center p-3 text-amber-100/70 hover:bg-amber-900/30 rounded-lg transition-all">
+                            <i class="fas fa-coins w-6 text-amber-500/50"></i>
+                            <span class="ml-3">Accounting</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- User Avatar (Waitress Gladina Samantha) -->
+            <div class="p-6 border-t border-amber-900/50 relative z-10">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-black font-bold border-2 border-amber-200 uppercase">
+                        {% if user.is_authenticated %}{{ user.username|slice:":2" }}{% else %}??{% endif %}
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-amber-100">{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% else %}Guest User{% endif %}</p>
+                        <p class="text-[10px] text-amber-500 uppercase tracking-widest">Staff • Active</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content (Warm Cream) -->
+        <div class="flex-1 p-8 md:p-12 overflow-y-auto">
+
+            <!-- Elegant Header -->
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
+                <div>
+                    <h2 class="serif-font text-4xl text-gray-900 tracking-tight">Leba Hotel HMS</h2>
+                    <p class="text-amber-600 font-semibold tracking-widest text-xs uppercase mt-1">
+                        Live Operations Feed
+                        <span class="mx-2 text-gray-300">|</span>
+                        <span class="text-gray-500" id="live-clock">Loading...</span>
+                    </p>
+                </div>
+                <div class="mt-4 md:mt-0 text-right">
+                    <p class="serif-font text-lg text-blue-900">Welcome, {% if user.is_authenticated %}{{ user.first_name|default:user.username }}{% else %}User{% endif %}!</p>
+                    <p class="text-xs text-gray-500 font-medium italic">Operations Dashboard</p>
+                </div>
+            </div>
+
+            <!-- Statistical Cards (Wood & Brass) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="wood-brass-card rounded-xl p-6 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-white/5 text-7xl transform -rotate-12 group-hover:scale-110 transition-transform"><i class="fas fa-fire-alt"></i></div>
+                    <h5 class="text-amber-500 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">New Orders</h5>
+                    <div class="flex items-baseline space-x-2">
+                        <span class="text-4xl font-bold text-white">{{ new_orders_count }}</span>
+                        <span class="text-emerald-400 text-xs font-bold"><i class="fas fa-arrow-up"></i> {{ trends.new_orders }}</span>
+                    </div>
+                </div>
+                <div class="wood-brass-card rounded-xl p-6 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-white/5 text-7xl transform -rotate-12 group-hover:scale-110 transition-transform"><i class="fas fa-concierge-bell"></i></div>
+                    <h5 class="text-amber-500 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Total Daily Orders</h5>
+                    <div class="flex items-baseline space-x-2">
+                        <span class="text-4xl font-bold text-white">{{ total_orders_count }}</span>
+                        <span class="text-emerald-400 text-xs font-bold"><i class="fas fa-arrow-up"></i> {{ trends.total_orders }}</span>
+                    </div>
+                </div>
+                <div class="wood-brass-card rounded-xl p-6 relative overflow-hidden group">
+                    <div class="absolute -right-4 -bottom-4 text-white/5 text-7xl transform -rotate-12 group-hover:scale-110 transition-transform"><i class="fas fa-user-clock"></i></div>
+                    <h5 class="text-amber-500 text-[10px] uppercase tracking-[0.2em] font-bold mb-1">Waiting List</h5>
+                    <div class="flex items-baseline space-x-2">
+                        <span class="text-4xl font-bold text-white">{{ waiting_list_count }}</span>
+                        <span class="text-rose-400 text-xs font-bold"><i class="fas fa-arrow-down"></i> {{ trends.waiting_list }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Core Processing Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+
+                <!-- Col 1 (Active Tickets) -->
+                <div class="lg:col-span-4">
+                    <div class="flex items-center justify-between mb-4 px-2">
+                        <h4 class="serif-font text-xl text-gray-800">Live Tickets</h4>
+                        <span class="text-[10px] font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded">REFRESHING...</span>
+                    </div>
+
+                    <!-- Filter Tabs -->
+                    <div class="flex space-x-1 mb-4 bg-gray-100 p-1 rounded-lg text-[10px] font-bold uppercase tracking-wider">
+                        <button onclick="filterOrders('ALL')" class="flex-1 py-2 rounded-md bg-white shadow-sm text-gray-800 transition-all filter-btn" id="filter-ALL">All</button>
+                        <button onclick="filterOrders('DINE_IN')" class="flex-1 py-2 rounded-md text-gray-500 hover:text-gray-700 transition-all filter-btn" id="filter-DINE_IN">Dine-In</button>
+                        <button onclick="filterOrders('TAKEAWAY')" class="flex-1 py-2 rounded-md text-gray-500 hover:text-gray-700 transition-all filter-btn" id="filter-TAKEAWAY">Takeaway</button>
+                        <button onclick="filterOrders('ROOM_SERVICE')" class="flex-1 py-2 rounded-md text-gray-500 hover:text-gray-700 transition-all filter-btn" id="filter-ROOM_SERVICE">Room Svc</button>
+                    </div>
+
+                    <div class="space-y-4" id="order-list-container">
+                        {% for order in active_orders %}
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all order-card" data-type="{{ order.order_type }}">
+                            <div class="flex justify-between items-start mb-3">
+                                <div>
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">Order #{{ order.id }} • {{ order.get_order_type_display }}</p>
+                                    <p class="font-bold text-gray-800">{% if order.table %}Table {{ order.table.table_number }}{% else %}{{ order.get_order_type_display }}{% endif %}</p>
+                                </div>
+                                {% if order.status == 'PENDING' %}
+                                <span class="text-[9px] font-bold uppercase bg-orange-100 text-orange-600 px-2 py-1 rounded-full">In Progress</span>
+                                {% elif order.status == 'SERVED' %}
+                                <span class="text-[9px] font-bold uppercase bg-blue-100 text-blue-600 px-2 py-1 rounded-full">Ready</span>
+                                {% elif order.status == 'PAID' %}
+                                <span class="text-[9px] font-bold uppercase bg-green-100 text-green-600 px-2 py-1 rounded-full">Completed</span>
+                                {% endif %}
+                            </div>
+                            <div class="text-xs text-gray-600 mb-4">
+                                {% for item in order.order_items.all %}
+                                <span>{{ item.quantity }}x {{ item.item.name }}{% if not forloop.last %}, {% endif %}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="flex justify-between items-center text-[10px]">
+                                <span class="text-gray-400"><i class="far fa-clock"></i> 12 mins ago</span>
+                                <span class="font-bold text-gray-800">UGX {{ order.total_amount|floatformat:0|intcomma }}</span>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-16 bg-white/50 rounded-xl border border-dashed border-gray-300">
+                            <i class="fas fa-receipt text-4xl text-gray-200 mb-4 block"></i>
+                            <p class="italic text-gray-400 text-sm">No active tickets at the moment</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Col 2 (Payment Processing) -->
+                <div class="lg:col-span-4">
+                    <h4 class="serif-font text-xl text-gray-800 mb-4 px-2">Active Accounts</h4>
+                    <div class="space-y-4">
+                        {% for order in pending_payments %}
+                        <div class="bg-white p-5 rounded-xl shadow-md border-t-2 border-amber-500">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="font-bold text-gray-800">Table {{ order.table.table_number }}</span>
+                                <span class="serif-font text-lg text-amber-700">UGX {{ order.total_amount|floatformat:0|intcomma }}</span>
+                            </div>
+                            <button class="gold-button w-full py-3 rounded-lg text-sm shadow-sm hover:shadow-lg transition-all active:scale-95">
+                                Confirm and Pay
+                            </button>
+                        </div>
+                        {% empty %}
+                        <div class="text-center py-16 bg-white/50 rounded-xl border border-dashed border-gray-300">
+                            <i class="fas fa-cash-register text-4xl text-gray-200 mb-4 block"></i>
+                            <p class="italic text-gray-400 text-sm">All accounts are currently cleared</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Col 3 (Insights & Inventory) -->
+                <div class="lg:col-span-4">
+
+                    <!-- Popular Dishes Rank Cards -->
+                    <h4 class="serif-font text-xl text-gray-800 mb-4 px-2">Popular Dishes</h4>
+                    <div class="space-y-3 mb-8">
+                        <div class="dish-card p-3 rounded-r-xl shadow-sm flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1567333160913-7e8b91c0d2a1?w=100&h=100&fit=crop" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-sm font-bold text-gray-800">Chicken Biriyani</p>
+                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Rank #1 • 42 Sold</p>
+                            </div>
+                        </div>
+                        <div class="dish-card p-3 rounded-r-xl shadow-sm flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="https://images.unsplash.com/photo-1626777553732-48995a6a090c?w=100&h=100&fit=crop" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-grow">
+                                <p class="text-sm font-bold text-gray-800">Chicken Luwombo</p>
+                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Rank #2 • 38 Sold</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Inventory Alerts -->
+                    <div class="bg-[#1a1a1a] p-6 rounded-2xl shadow-2xl relative overflow-hidden flex flex-col h-[300px]">
+                        <div class="absolute top-0 right-0 w-20 h-20 bg-amber-500/10 rounded-full -mr-10 -mt-10"></div>
+                        <h5 class="text-amber-500 font-bold text-xs uppercase tracking-widest mb-4 flex items-center flex-shrink-0">
+                            <i class="fas fa-exclamation-circle mr-2"></i> Stock Alerts
+                        </h5>
+
+                        <div class="overflow-y-auto flex-grow custom-scrollbar pr-2">
+                            <table class="w-full text-left">
+                                <tbody class="divide-y divide-white/5">
+                                    {% for item in out_of_stock_items %}
+                                    <tr>
+                                        <td class="py-3">
+                                            <p class="text-[11px] text-gray-200 font-medium">{{ item.name }}</p>
+                                            <span class="text-[8px] px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-500 font-bold border border-rose-500/30 uppercase">Critical</span>
+                                        </td>
+                                        <td class="py-3 text-right">
+                                            <button class="text-[9px] bg-amber-500 hover:bg-amber-400 text-black px-2 py-1 rounded font-bold transition-colors">RESTOCK</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% for item in low_stock_items %}
+                                    <tr>
+                                        <td class="py-3">
+                                            <p class="text-[11px] text-gray-300 font-medium">{{ item.name }}</p>
+                                            <span class="text-[8px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-500 font-bold border border-amber-500/30 uppercase">Low ({{ item.current_stock }})</span>
+                                        </td>
+                                        <td class="py-3 text-right">
+                                            <button class="text-[9px] border border-amber-500/50 text-amber-500 hover:bg-amber-500 hover:text-black px-2 py-1 rounded font-bold transition-all">RESTOCK</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% if not out_of_stock_items and not low_stock_items %}
+                                    <tr>
+                                        <td colspan="2" class="py-10 text-center">
+                                            <i class="fas fa-check-circle text-2xl text-emerald-500/20 mb-2 block"></i>
+                                            <p class="text-xs text-gray-500 italic">All stock levels normal</p>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const options = { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            document.getElementById('live-clock').textContent = now.toLocaleDateString('en-GB', options).replace(',', '');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function filterOrders(type) {
+            // Update buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-sm', 'text-gray-800');
+                btn.classList.add('text-gray-500');
+            });
+            const activeBtn = document.getElementById('filter-' + type);
+            activeBtn.classList.remove('text-gray-500');
+            activeBtn.classList.add('bg-white', 'shadow-sm', 'text-gray-800');
+
+            // Filter cards
+            document.querySelectorAll('.order-card').forEach(card => {
+                if (type === 'ALL' || card.getAttribute('data-type') === type) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

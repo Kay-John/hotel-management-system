@@ -248,24 +248,27 @@
                     <!-- Popular Dishes Rank Cards -->
                     <h4 class="serif-font text-xl text-gray-800 mb-4 px-2">Popular Dishes</h4>
                     <div class="space-y-3 mb-8">
+                        {% for item in popular_dishes %}
                         <div class="dish-card p-3 rounded-r-xl shadow-sm flex items-center space-x-4">
                             <div class="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                                <img src="https://images.unsplash.com/photo-1567333160913-7e8b91c0d2a1?w=100&h=100&fit=crop" class="w-full h-full object-cover">
+                                {% if item.image %}
+                                <img src="{{ item.image.url }}" class="w-full h-full object-cover">
+                                {% else %}
+                                <div class="w-full h-full flex items-center justify-center bg-amber-100 text-amber-600">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                {% endif %}
                             </div>
                             <div class="flex-grow">
-                                <p class="text-sm font-bold text-gray-800">Chicken Biriyani</p>
-                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Rank #1 • 42 Sold</p>
+                                <p class="text-sm font-bold text-gray-800">{{ item.name }}</p>
+                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Rank #{{ forloop.counter }} • {{ item.order_count }} Sold</p>
                             </div>
                         </div>
-                        <div class="dish-card p-3 rounded-r-xl shadow-sm flex items-center space-x-4">
-                            <div class="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden flex-shrink-0">
-                                <img src="https://images.unsplash.com/photo-1626777553732-48995a6a090c?w=100&h=100&fit=crop" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-grow">
-                                <p class="text-sm font-bold text-gray-800">Chicken Luwombo</p>
-                                <p class="text-[9px] text-gray-400 uppercase tracking-widest">Rank #2 • 38 Sold</p>
-                            </div>
+                        {% empty %}
+                        <div class="text-center py-6 bg-white/50 rounded-xl border border-dashed border-gray-300">
+                            <p class="italic text-gray-400 text-xs">No data yet</p>
                         </div>
+                        {% endfor %}
                     </div>
 
                     <!-- Inventory Alerts -->

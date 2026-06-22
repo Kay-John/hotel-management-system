@@ -73,7 +73,8 @@ class Order(models.Model):
         return False
 
     def __str__(self):
-        return f"Order {self.id} - Table {self.table.table_number}"
+        location = f"Table {self.table.table_number}" if self.table else self.get_order_type_display()
+        return f"Order {self.id} - {location}"
 
 
 class OrderItem(models.Model):
